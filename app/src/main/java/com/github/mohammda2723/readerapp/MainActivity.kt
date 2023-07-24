@@ -23,18 +23,18 @@ class MainActivity : ComponentActivity() {
                 // A surface container using the 'background' color from the theme
 
                 val db = FirebaseFirestore.getInstance()
-                val data : MutableMap<String,Any> = HashMap()
-                data["Name"] = "Mohammad"
-                data["Family"] ="Ebrahimi"
+                val data: MutableMap<String, Any> = HashMap()
+                data["Name"] = "Mohammad2"
+                data["Family"] = "Ebrahimi2"
                 Surface(
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colorScheme.background
                 ) {
                     db.collection("users").add(data).addOnSuccessListener {
-                      Log.d("google fireStore",it.id)
+                        Log.d("google fireStore", it.id)
 
                     }.addOnFailureListener {
-                        Log.d("google fireStore",it.message.toString())
+                        Log.d("google fireStore", it.message.toString())
 
                     }
                 }
