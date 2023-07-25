@@ -14,7 +14,10 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import com.github.mohammda2723.readerapp.ui.theme.ReaderAppTheme
 import com.google.firebase.firestore.FirebaseFirestore
+import dagger.hilt.android.AndroidEntryPoint
 
+
+@AndroidEntryPoint
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -22,22 +25,12 @@ class MainActivity : ComponentActivity() {
             ReaderAppTheme {
                 // A surface container using the 'background' color from the theme
 
-                val db = FirebaseFirestore.getInstance()
-                val data: MutableMap<String, Any> = HashMap()
-                data["Name"] = "Mohammad2"
-                data["Family"] = "Ebrahimi2"
                 Surface(
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colorScheme.background
-                ) {
-                    db.collection("users").add(data).addOnSuccessListener {
-                        Log.d("google fireStore", it.id)
+                ) {}
 
-                    }.addOnFailureListener {
-                        Log.d("google fireStore", it.message.toString())
 
-                    }
-                }
             }
         }
     }
