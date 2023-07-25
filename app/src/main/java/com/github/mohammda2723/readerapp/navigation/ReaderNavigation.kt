@@ -4,6 +4,7 @@ import androidx.compose.runtime.Composable
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import com.github.mohammda2723.readerapp.screens.home.Home
 import com.github.mohammda2723.readerapp.screens.spalsh.Splash
 
 @Composable
@@ -20,10 +21,11 @@ import com.github.mohammda2723.readerapp.screens.spalsh.Splash
         }
         //home
         composable(ReaderScreens.Home.name){
-
+                Home()
         }
         //login
         composable(ReaderScreens.Login.name){
+
 
         }
         //details
