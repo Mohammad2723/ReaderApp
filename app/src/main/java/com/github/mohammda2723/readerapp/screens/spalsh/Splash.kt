@@ -2,6 +2,8 @@ package com.github.mohammda2723.readerapp.screens.spalsh
 
 import android.annotation.SuppressLint
 import android.view.animation.OvershootInterpolator
+import androidx.compose.animation.core.Animatable
+import androidx.compose.animation.core.tween
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -19,22 +21,17 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.scale
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
-import  androidx.compose.animation.core.Animatable
-import androidx.compose.animation.core.spring
-import androidx.compose.animation.core.tween
-import androidx.compose.ui.draw.scale
+import com.github.mohammda2723.readerapp.component.ReaderLogo
 import com.github.mohammda2723.readerapp.navigation.ReaderScreens
 import kotlinx.coroutines.delay
 
 @SuppressLint("RememberReturnType")
-@Preview
 @Composable
-fun Splash(navController: NavHostController ) {
+fun Splash(navController: NavHostController) {
 
     // animation
     val scale = remember {
@@ -42,6 +39,7 @@ fun Splash(navController: NavHostController ) {
     }
 
 
+    // animation launch
     LaunchedEffect(key1 = true) {
 
         scale.animateTo(
@@ -53,9 +51,12 @@ fun Splash(navController: NavHostController ) {
 
         delay(2000L)
 
-        navController.navigate(route = ReaderScreens.Home.name)
+        navController.popBackStack()
+        navController.navigate(route = ReaderScreens.Login.name)
+
 
     }
+    //end animation launch
 
 
     // logo
@@ -78,11 +79,8 @@ fun Splash(navController: NavHostController ) {
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
 
-            Text(
-                text = "Reader App",
-                style = MaterialTheme.typography.headlineLarge,
-                color = Color.Red.copy(alpha = 0.5f)
-            )
+            ReaderLogo()
+
             Spacer(modifier = Modifier.height(10.dp))
             Text(
                 text = "\" Read. Change . Progress\" ",
@@ -93,3 +91,4 @@ fun Splash(navController: NavHostController ) {
     }
 
 }
+
