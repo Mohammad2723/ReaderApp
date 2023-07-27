@@ -1,6 +1,5 @@
 package com.github.mohammda2723.readerapp.navigation
 
-import android.telecom.Call.Details
 import androidx.compose.runtime.Composable
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
