@@ -1,5 +1,7 @@
 package com.github.mohammda2723.readerapp.screens.login
 
+import android.content.Context
+import android.widget.Toast
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -11,8 +13,10 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.verticalScroll
+import androidx.compose.material3.Button
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -22,6 +26,7 @@ import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.focus.focusRequester
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.tooling.preview.Preview
@@ -33,6 +38,7 @@ import com.github.mohammda2723.readerapp.component.ReaderLogo
 @Preview
 @Composable
 fun Login() {
+    val context = LocalContext.current
     Surface(modifier = Modifier.fillMaxSize()) {
 
         Column(
@@ -41,7 +47,11 @@ fun Login() {
         ) {
 
             ReaderLogo()
-            UserForm() { _, _ -> }
+            UserForm() { email, passwod ->
+
+                Toast.makeText(context," $email and $passwod",Toast.LENGTH_LONG).show()
+
+            }
         }
     }
 
@@ -97,7 +107,34 @@ fun UserForm(
                 onDone(email.value.trim(), password.value.trim())
             }
         )
+        Spacer(modifier = Modifier.height(10.dp))
+        SubmitButton(
+            textId = if (isCreateAccount) "Create Account" else "Login",
+            loading = loading,
+            validInput = valid
+        ) {
+          onDone(email.value.trim() , password.value.trim())
+
+        }
+
 
     }
+
+}
+@Composable
+fun SubmitButton(textId: String, loading: Boolean, validInput: Boolean, onClick: () -> Unit) {
+
+    Button(
+        onClick = onClick,
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(3.dp),
+        enabled = !loading && validInput
+    ) {
+
+        Text(text = textId)
+
+    }
+
 
 }
