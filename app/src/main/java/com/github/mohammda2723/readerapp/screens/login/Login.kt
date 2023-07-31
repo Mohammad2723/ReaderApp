@@ -35,6 +35,8 @@ import com.github.mohammda2723.readerapp.component.EmailInput
 import com.github.mohammda2723.readerapp.component.PasswordInput
 import com.github.mohammda2723.readerapp.component.ReaderLogo
 
+
+//LoginScreen
 @Preview
 @Composable
 fun Login() {
@@ -47,9 +49,9 @@ fun Login() {
         ) {
 
             ReaderLogo()
-            UserForm() { email, passwod ->
+            UserForm() { email, passWord ->
 
-                Toast.makeText(context," $email and $passwod",Toast.LENGTH_LONG).show()
+                Toast.makeText(context, " $email and $passWord", Toast.LENGTH_LONG).show()
 
             }
         }
@@ -58,7 +60,7 @@ fun Login() {
 
 }
 
-
+// User Form
 @OptIn(ExperimentalComposeUiApi::class)
 @Composable
 fun UserForm(
@@ -66,31 +68,37 @@ fun UserForm(
     isCreateAccount: Boolean = false,
     onDone: (String, String) -> Unit = { email, password -> }
 ) {
+
     val email = rememberSaveable { mutableStateOf("") }
     val password = rememberSaveable { mutableStateOf("") }
     val passwordVisibility = rememberSaveable { mutableStateOf(false) }
-    val passwordFocusRequest = FocusRequester.Default
+    val passwordFocusRequest = remember {
+        FocusRequester()
+    }
     val keyboardController = LocalSoftwareKeyboardController.current
     val valid = remember(email.value, password.value) {
+
         email.value.trim().isNotEmpty() && password.value.trim().isNotEmpty()
     }
-    val modifier = Modifier
-        .height(250.dp)
-        .background(MaterialTheme.colorScheme.background)
-        .verticalScroll(
-            rememberScrollState()
-        )
+
     Column(
-        modifier = modifier,
+        modifier = Modifier
+            .height(250.dp)
+            .background(MaterialTheme.colorScheme.background)
+            .verticalScroll(
+                rememberScrollState()
+            ),
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.Center
     ) {
+
+        // email
         EmailInput(emailState = email, enabled = !loading, onAction = KeyboardActions {
-//            passwordFocusRequest.requestFocus()
+            passwordFocusRequest.requestFocus()
         }, imeAction = ImeAction.Next)
 
         Spacer(modifier = Modifier.height(10.dp))
-
+        //passWord
         PasswordInput(
             modifier = Modifier
                 .focusRequester(passwordFocusRequest)
@@ -101,19 +109,21 @@ fun UserForm(
             enabled = !loading,
             passwordVisibility = passwordVisibility,
             onAction = KeyboardActions {
-                if (!valid) return@KeyboardActions
 
-                // LAMBDA FUN
+                if (!valid) return@KeyboardActions
                 onDone(email.value.trim(), password.value.trim())
             }
         )
         Spacer(modifier = Modifier.height(10.dp))
         SubmitButton(
+
             textId = if (isCreateAccount) "Create Account" else "Login",
             loading = loading,
             validInput = valid
+
         ) {
-          onDone(email.value.trim() , password.value.trim())
+
+            onDone(email.value.trim(), password.value.trim())
 
         }
 
@@ -121,6 +131,7 @@ fun UserForm(
     }
 
 }
+
 @Composable
 fun SubmitButton(textId: String, loading: Boolean, validInput: Boolean, onClick: () -> Unit) {
 
