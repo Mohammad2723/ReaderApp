@@ -31,7 +31,7 @@ import com.github.mohammda2723.readerapp.screens.update.Update
         //login
         composable(ReaderScreens.Login.name){
 
-            Login()
+            Login(navController)
 
         }
         //details

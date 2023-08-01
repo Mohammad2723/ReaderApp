@@ -1,7 +1,5 @@
 package com.github.mohammda2723.readerapp.screens.login
 
-import android.content.Context
-import android.widget.Toast
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -28,15 +26,14 @@ import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.focus.focusRequester
-import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.modifier.modifierLocalConsumer
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.navigation.NavController
 import com.github.mohammda2723.readerapp.R
 import com.github.mohammda2723.readerapp.component.EmailInput
 import com.github.mohammda2723.readerapp.component.PasswordInput
@@ -46,7 +43,7 @@ import com.github.mohammda2723.readerapp.component.ReaderLogo
 //LoginScreen
 @Preview
 @Composable
-fun Login() {
+fun Login(navController:NavController , myViewModel: LoginViewModel = viewModel() ) {
     val showLoginForm = rememberSaveable {
         mutableStateOf(true)
     }
@@ -63,7 +60,8 @@ fun Login() {
             //FIRST check login or signUp
             if (showLoginForm.value) {
                 UserForm(isCreateAccount = false, loading = false) { email, password ->
-                    //Todo:FB LOGIN
+                    //FB LOGIN
+                    myViewModel.LogInWithEmailAndPass(email = email , pass = password)
 
                 }
             } else {
