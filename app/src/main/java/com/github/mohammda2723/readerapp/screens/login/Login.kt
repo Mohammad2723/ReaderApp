@@ -3,8 +3,10 @@ package com.github.mohammda2723.readerapp.screens.login
 import android.content.Context
 import android.widget.Toast
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -26,11 +28,16 @@ import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.focus.focusRequester
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.modifier.modifierLocalConsumer
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
+import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.github.mohammda2723.readerapp.R
 import com.github.mohammda2723.readerapp.component.EmailInput
 import com.github.mohammda2723.readerapp.component.PasswordInput
 import com.github.mohammda2723.readerapp.component.ReaderLogo
@@ -40,20 +47,49 @@ import com.github.mohammda2723.readerapp.component.ReaderLogo
 @Preview
 @Composable
 fun Login() {
-    val context = LocalContext.current
+    val showLoginForm = rememberSaveable {
+        mutableStateOf(true)
+    }
     Surface(modifier = Modifier.fillMaxSize()) {
 
         Column(
-            verticalArrangement = Arrangement.Center,
+            verticalArrangement = Arrangement.Top,
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
 
             ReaderLogo()
-            UserForm() { email, passWord ->
 
-                Toast.makeText(context, " $email and $passWord", Toast.LENGTH_LONG).show()
+            //USER form
+            //FIRST check login or signUp
+            if (showLoginForm.value) {
+                UserForm(isCreateAccount = false, loading = false) { email, password ->
+                    //Todo:FB LOGIN
+
+                }
+            } else {
+                UserForm(isCreateAccount = true, loading = false) { email, passWord ->
+                    //TODO:FB SIGNUP
+
+                }
+            }
+
+            Spacer(modifier = Modifier.height(15.dp))
+            Row(
+                modifier = Modifier.clickable { showLoginForm.value = !showLoginForm.value },
+                verticalAlignment = Alignment.CenterVertically,
+                horizontalArrangement = Arrangement.Center
+            ) {
+
+                Text(text = "New User?: ")
+                Text(
+                    text = if (showLoginForm.value) "SignUp" else "Login",
+                    style = TextStyle(color = MaterialTheme.colorScheme.primary)
+                )
+
 
             }
+
+
         }
     }
 
@@ -66,7 +102,7 @@ fun Login() {
 fun UserForm(
     loading: Boolean = false,
     isCreateAccount: Boolean = false,
-    onDone: (String, String) -> Unit = { email, password -> }
+    onDone: (String, String) -> Unit = { _, _ -> }
 ) {
 
     val email = rememberSaveable { mutableStateOf("") }
@@ -83,15 +119,22 @@ fun UserForm(
 
     Column(
         modifier = Modifier
-            .height(250.dp)
+            .height(500.dp)
             .background(MaterialTheme.colorScheme.background)
             .verticalScroll(
                 rememberScrollState()
             ),
         horizontalAlignment = Alignment.CenterHorizontally,
-        verticalArrangement = Arrangement.Center
+        verticalArrangement = Arrangement.Top
     ) {
 
+        // create account notice
+        if (isCreateAccount){
+            Text(text = stringResource(id = R.string.create_account),modifier =  Modifier.padding(4.dp))
+            Spacer(modifier = Modifier.height(15.dp))
+        }
+        
+        
         // email
         EmailInput(emailState = email, enabled = !loading, onAction = KeyboardActions {
             passwordFocusRequest.requestFocus()
@@ -110,8 +153,13 @@ fun UserForm(
             passwordVisibility = passwordVisibility,
             onAction = KeyboardActions {
 
-                if (!valid) return@KeyboardActions
-                onDone(email.value.trim(), password.value.trim())
+                if (!valid) {
+                    return@KeyboardActions
+                }else{
+                    onDone(email.value.trim(), password.value.trim())
+                    keyboardController?.hide()
+                }
+
             }
         )
         Spacer(modifier = Modifier.height(10.dp))
@@ -124,6 +172,7 @@ fun UserForm(
         ) {
 
             onDone(email.value.trim(), password.value.trim())
+            keyboardController?.hide()
 
         }
 
