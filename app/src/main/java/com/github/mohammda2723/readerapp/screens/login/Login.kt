@@ -26,6 +26,7 @@ import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.focus.focusRequester
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
@@ -37,11 +38,12 @@ import com.github.mohammda2723.readerapp.R
 import com.github.mohammda2723.readerapp.component.EmailInput
 import com.github.mohammda2723.readerapp.component.PasswordInput
 import com.github.mohammda2723.readerapp.component.ReaderLogo
+import com.github.mohammda2723.readerapp.navigation.ReaderScreens
 
 
 //LoginScreen
 @Composable
-fun Login(navController:NavController , myViewModel: LoginViewModel = viewModel() ) {
+fun Login(navController: NavController, myViewModel: LoginViewModel = viewModel()) {
     val showLoginForm = rememberSaveable {
         mutableStateOf(true)
     }
@@ -56,10 +58,16 @@ fun Login(navController:NavController , myViewModel: LoginViewModel = viewModel(
 
             //USER form
             //FIRST check login or signUp
+            val context = LocalContext.current
             if (showLoginForm.value) {
                 UserForm(isCreateAccount = false, loading = false) { email, password ->
                     //FB LOGIN
-                    myViewModel.logInWithEmailAndPassword(email = email , pass = password)
+
+                    myViewModel.logInWithEmailAndPassword(email = email, pass = password, context) {
+
+                        navController.popBackStack()
+                        navController.navigate(ReaderScreens.Home.name)
+                    }
 
                 }
             } else {
@@ -121,12 +129,15 @@ fun UserForm(
     ) {
 
         // create account notice
-        if (isCreateAccount){
-            Text(text = stringResource(id = R.string.create_account),modifier =  Modifier.padding(4.dp))
+        if (isCreateAccount) {
+            Text(
+                text = stringResource(id = R.string.create_account),
+                modifier = Modifier.padding(4.dp)
+            )
             Spacer(modifier = Modifier.height(15.dp))
         }
-        
-        
+
+
         // email
         EmailInput(emailState = email, enabled = !loading, onAction = KeyboardActions {
             passwordFocusRequest.requestFocus()
@@ -147,7 +158,7 @@ fun UserForm(
 
                 if (!valid) {
                     return@KeyboardActions
-                }else{
+                } else {
                     onDone(email.value.trim(), password.value.trim())
                     keyboardController?.hide()
                 }

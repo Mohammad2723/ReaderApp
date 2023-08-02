@@ -1,6 +1,8 @@
 package com.github.mohammda2723.readerapp.screens.login
 
+import android.content.Context
 import android.util.Log
+import android.widget.Toast
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -19,28 +21,38 @@ class LoginViewModel : ViewModel() {
     private val _loading = MutableLiveData(false)
     val loading: LiveData<Boolean> = _loading
 
-    fun logInWithEmailAndPassword(email: String, pass: String) = viewModelScope.launch {
+    fun logInWithEmailAndPassword(email: String, pass: String, context: Context,home: () -> Unit ) =
+        viewModelScope.launch {
 
-        try {
+            try {
 
-            auth.signInWithEmailAndPassword(email, pass)
-                .addOnCompleteListener { task ->
-                    if (task.isSuccessful) {
-                        Log.d("FB","say welcome Back :"+ task.result.toString())
+                auth.signInWithEmailAndPassword(email, pass)
+                    .addOnCompleteListener { task ->
+                        if (task.isSuccessful) {
+                            Log.d("FB", "say welcome Back :" + task.result.toString())
+                            // navigate to homeScreen
+                            home()
+                            Toast.makeText(context, "hello welcome back $email", Toast.LENGTH_LONG)
+                                .show()
+                        } else {
+                            // check connection
+                            try {
 
-//                        TODO("say welcome back")
+                                Log.e("FB", task.result.toString())
 
-                    } else {
-                        Log.e("FB", task.result.toString())
+                            } catch (e: Exception) {
+                                // connection timeout or 403
+                                Log.e("FB", "connection timeout or 403")
+                            }
+                        }
                     }
-                }
 
 
-        } catch (ex: Exception) {
-            Log.e("FB", "LogInWithEmailAndPass error in exception: ${ex.message}")
+            } catch (ex: Exception) {
+                Log.e("FB", "LogInWithEmailAndPass error in exception: ${ex.message}")
+            }
+
         }
-
-    }
 
 
     fun SignInWithEmailAndPass(email: String, pass: String) {
