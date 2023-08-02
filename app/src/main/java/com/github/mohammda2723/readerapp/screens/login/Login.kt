@@ -30,7 +30,6 @@ import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.input.ImeAction
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
@@ -41,7 +40,6 @@ import com.github.mohammda2723.readerapp.component.ReaderLogo
 
 
 //LoginScreen
-@Preview
 @Composable
 fun Login(navController:NavController , myViewModel: LoginViewModel = viewModel() ) {
     val showLoginForm = rememberSaveable {
@@ -61,7 +59,7 @@ fun Login(navController:NavController , myViewModel: LoginViewModel = viewModel(
             if (showLoginForm.value) {
                 UserForm(isCreateAccount = false, loading = false) { email, password ->
                     //FB LOGIN
-                    myViewModel.LogInWithEmailAndPass(email = email , pass = password)
+                    myViewModel.logInWithEmailAndPassword(email = email , pass = password)
 
                 }
             } else {
@@ -83,11 +81,7 @@ fun Login(navController:NavController , myViewModel: LoginViewModel = viewModel(
                     text = if (showLoginForm.value) "SignUp" else "Login",
                     style = TextStyle(color = MaterialTheme.colorScheme.primary)
                 )
-
-
             }
-
-
         }
     }
 

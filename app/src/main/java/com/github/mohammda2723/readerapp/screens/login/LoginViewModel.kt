@@ -19,7 +19,7 @@ class LoginViewModel : ViewModel() {
     private val _loading = MutableLiveData(false)
     val loading: LiveData<Boolean> = _loading
 
-    fun LogInWithEmailAndPass(email: String, pass: String) = viewModelScope.launch {
+    fun logInWithEmailAndPassword(email: String, pass: String) = viewModelScope.launch {
 
         try {
 
@@ -28,7 +28,7 @@ class LoginViewModel : ViewModel() {
                     if (task.isSuccessful) {
                         Log.d("FB","say welcome Back :"+ task.result.toString())
 
-                        TODO("say welcome back")
+//                        TODO("say welcome back")
 
                     } else {
                         Log.e("FB", task.result.toString())
@@ -37,7 +37,7 @@ class LoginViewModel : ViewModel() {
 
 
         } catch (ex: Exception) {
-            Log.e("FB", "LogInWithEmailAndPass: ${ex.message}")
+            Log.e("FB", "LogInWithEmailAndPass error in exception: ${ex.message}")
         }
 
     }
