@@ -72,7 +72,12 @@ fun Login(navController: NavController, myViewModel: LoginViewModel = viewModel(
                 }
             } else {
                 UserForm(isCreateAccount = true, loading = false) { email, passWord ->
-                    //TODO:FB SIGNUP
+
+
+                    myViewModel.CreateUserWithEmailAndPassword(email,passWord){
+                        navController.popBackStack()
+                        navController.navigate(ReaderScreens.Home.name)
+                    }
 
                 }
             }
