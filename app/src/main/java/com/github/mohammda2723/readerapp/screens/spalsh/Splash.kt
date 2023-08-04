@@ -27,6 +27,7 @@ import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
 import com.github.mohammda2723.readerapp.component.ReaderLogo
 import com.github.mohammda2723.readerapp.navigation.ReaderScreens
+import com.google.firebase.auth.FirebaseAuth
 import kotlinx.coroutines.delay
 
 @SuppressLint("RememberReturnType")
@@ -50,9 +51,15 @@ fun Splash(navController: NavHostController) {
         )
 
         delay(2000L)
+        if (FirebaseAuth.getInstance().currentUser?.email.isNullOrBlank()){
 
-        navController.popBackStack()
-        navController.navigate(route = ReaderScreens.Login.name)
+            navController.popBackStack()
+            navController.navigate(route = ReaderScreens.Login.name)
+        }else{
+            navController.popBackStack()
+            navController.navigate(route = ReaderScreens.Home.name)
+        }
+
 
 
     }
