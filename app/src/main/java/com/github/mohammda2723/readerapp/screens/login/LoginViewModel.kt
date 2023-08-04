@@ -9,6 +9,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.ktx.auth
+import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.ktx.Firebase
 import kotlinx.coroutines.launch
 
@@ -63,15 +64,18 @@ class LoginViewModel : ViewModel() {
                 auth.createUserWithEmailAndPassword(email, pass).addOnCompleteListener { task ->
                     if (task.isSuccessful) {
                         Log.d("FB", "Your account is created")
+                        // get name for save in FBStore
+                        val displayName = task.result?.user?.email.toString().split("@")[0]
+                        createUser(name = displayName)
                         home()
                     } else {
                         //check connection and fb failed
                         try {
-                              //FB flier
+                            //FB flier
                             Log.e("FB", "FB going wrong : ${task.result.toString()}")
 
                         } catch (e: Exception) {
-                             // connection failed
+                            // connection failed
                             Log.e("FB", "connection interrupter or 403")
 
                         }
@@ -83,6 +87,21 @@ class LoginViewModel : ViewModel() {
             _loading.value = false
         }
 
+
+    }
+
+    private fun createUser(name: String) {
+        //get userid from firebase auth
+        val userID = auth.currentUser?.uid
+
+        //create a user ->>>>>> name and uid >>>>> hashmap >>>>>>save in firebaseStore
+
+        val user = mutableMapOf<String, Any>()
+        user["user_id"] = userID.toString()
+        user["display_name"] = name
+
+        // connect to firebase store and save new user
+        FirebaseFirestore.getInstance().collection("users").add(user)
 
     }
 
