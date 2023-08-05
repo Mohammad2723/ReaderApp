@@ -34,7 +34,6 @@ fun ReaderLogo() {
         color = Color.Red.copy(alpha = 0.5f)
     )
 }
-
 //Email input
 @Composable
 fun EmailInput(

@@ -7,6 +7,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.github.mohammda2723.readerapp.model.MUser
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.firestore.FirebaseFirestore
@@ -91,14 +92,26 @@ class LoginViewModel : ViewModel() {
     }
 
     private fun createUser(name: String) {
-        //get userid from firebase auth
+        //get userid from firebase auth >>> after once use from FB auth can use
+        // from it without internet connection like below:
         val userID = auth.currentUser?.uid
 
-        //create a user ->>>>>> name and uid >>>>> hashmap >>>>>>save in firebaseStore
+//        //create a user ->>>>>> name and uid >>>>> hashmap >>>>>>save in firebaseStore
+//         WAY:1
+//        val user = mutableMapOf<String, Any>()
+//        user["user_id"] = userID.toString()
+//        user["display_name"] = name
 
-        val user = mutableMapOf<String, Any>()
-        user["user_id"] = userID.toString()
-        user["display_name"] = name
+         // WAY2
+        val user = MUser(
+            userId = userID.toString(),
+            displayName = name,
+            avatarUrl = "",
+            quote = "Life is Great",
+            profession = "Android Developer",
+            id = null
+        ).toMap()
+
 
         // connect to firebase store and save new user
         FirebaseFirestore.getInstance().collection("users").add(user)
