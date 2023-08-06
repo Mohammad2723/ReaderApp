@@ -26,7 +26,7 @@ import com.github.mohammda2723.readerapp.screens.update.Update
         }
         //home
         composable(ReaderScreens.Home.name){
-            Home()
+            Home(navController = navController)
         }
         //login
         composable(ReaderScreens.Login.name){
