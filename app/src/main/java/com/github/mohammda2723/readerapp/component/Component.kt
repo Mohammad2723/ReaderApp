@@ -173,7 +173,6 @@ fun PasswordVisibility(passwordVisibility: MutableState<Boolean>) {
 
 }
 
-
 ////////////////////////////////////TopAppBar///////////////////////////////////////////////////////
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -233,7 +232,6 @@ fun Profile(showProfile: Boolean, title: String) {
     }
 }
 
-
 ////////////////////////////////////////FloatingActionButton///////////////////////////////////////
 @Composable
 fun MyFloatActionButton(onClick: () -> Unit) {
@@ -272,11 +270,19 @@ fun ReadingNow(navController: NavController) {
         .currentUser?.email?.split('@')?.get(0) ?: "N/A"
 
 
-    Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceBetween) {
+    Row(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(horizontal = 10.dp),
+        horizontalArrangement = Arrangement.SpaceBetween
+    ) {
 
         TitleSection(label = "You reading \n Activity Right now")
 
-        Column(verticalArrangement = Arrangement.Center) {
+        Column(
+            verticalArrangement = Arrangement.Center,
+            horizontalAlignment = Alignment.CenterHorizontally
+        ) {
             Icon(
                 modifier = Modifier
                     .clickable { navController.navigate(ReaderScreens.Stats.name) }
@@ -298,6 +304,8 @@ fun ReadingNow(navController: NavController) {
     }
 }
 
+
+////////////////////////////Title Section /////////////////////////////////////////////////////////
 @Composable
 fun TitleSection(
     modifier: Modifier = Modifier,
