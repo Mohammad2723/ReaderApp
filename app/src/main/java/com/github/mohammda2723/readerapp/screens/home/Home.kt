@@ -8,7 +8,6 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -19,13 +18,20 @@ import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.FavoriteBorder
+import androidx.compose.material.icons.filled.Star
+import androidx.compose.material.icons.rounded.Favorite
 import androidx.compose.material.icons.rounded.FavoriteBorder
+import androidx.compose.material.icons.rounded.Star
+import androidx.compose.material3.ButtonColors
+import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Card
-import androidx.compose.material3.CardColors
 import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.CardElevation
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
+import androidx.compose.material3.IconButtonColors
+import androidx.compose.material3.IconButtonDefaults
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
@@ -35,19 +41,17 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
-import androidx.compose.ui.modifier.modifierLocalConsumer
-import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import coil.compose.rememberAsyncImagePainter
-import coil.compose.rememberImagePainter
+import com.github.mohammda2723.readerapp.component.FavButton
 import com.github.mohammda2723.readerapp.component.MyFloatActionButton
 import com.github.mohammda2723.readerapp.component.MyTopAppBar
 import com.github.mohammda2723.readerapp.component.ReadingNow
+import com.github.mohammda2723.readerapp.component.StarRank
 import com.github.mohammda2723.readerapp.model.MBook
+import java.time.format.TextStyle
 
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -115,6 +119,7 @@ fun BigListCard(
 //                contentColor = MaterialTheme.colorScheme.onPrimary,
 //                containerColor = MaterialTheme.colorScheme.primary
 //            )
+            elevation = CardDefaults.cardElevation(defaultElevation = 0.dp)
         ) {
             Box(modifier = Modifier.fillMaxSize()) {
 
@@ -127,31 +132,40 @@ fun BigListCard(
 
                 Column(
                     Modifier.fillMaxSize(),
-                    verticalArrangement = Arrangement.Top,
+                    verticalArrangement = Arrangement.SpaceBetween,
                     horizontalAlignment = Alignment.CenterHorizontally
                 ) {
-
+                    // star row
                     Row(
-                        modifier = Modifier.fillMaxWidth().padding(7.dp),
-                        Arrangement.End,
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(7.dp),
+                        Arrangement.SpaceBetween,
                         verticalAlignment = Alignment.CenterVertically
                     ) {
-                        IconButton(
-                            modifier = Modifier.background(shape = CircleShape, color = MaterialTheme.colorScheme.primary),
-                            onClick = { /*TODO*/ }) {
-                            Icon(
-                                imageVector = Icons.Default.FavoriteBorder,
-                                contentDescription = "",
-                                tint = MaterialTheme.colorScheme.onPrimary
-                            )
-                        }
+
+                        StarRank()
+
+                        FavButton()
+
+
                     }
 
+                   // name of book
+                    Column(
+                        modifier = Modifier
+                            .height(40.dp)
+                            .fillMaxWidth()
+                            .background(color = MaterialTheme.colorScheme.primary.copy(alpha = 0.7f)),
+                        verticalArrangement = Arrangement.Center,
+                        horizontalAlignment = Alignment.CenterHorizontally
+                    ) {
+
+                         Text(text = "A Song Of Ice And Fire", fontStyle = MaterialTheme.typography.bodyLarge.fontStyle, color = MaterialTheme.colorScheme.onPrimary)
+                    }
 
                 }
             }
-
         }
     }
-
 }
