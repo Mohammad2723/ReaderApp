@@ -341,52 +341,53 @@ fun TitleSection(
 
 
 }
-
+// region OWN CODE
 //////////////////////////////// Star Rank ////////////////////////////////////////////////////////
-@Composable
-fun StarRank(score: String = "4.3") {
-
-    Card(
-        elevation = CardDefaults.cardElevation(defaultElevation = 2.dp),
-        modifier = Modifier.size(50.dp),
-        shape = CircleShape,
-        colors = CardDefaults.cardColors(
-            containerColor = MaterialTheme.colorScheme.primary,
-            contentColor = MaterialTheme.colorScheme.onPrimary
-        )
-    ) {
-        Column(
-            modifier = Modifier
-                .fillMaxSize()
-                .padding(1.dp),
-            horizontalAlignment = Alignment.CenterHorizontally,
-            verticalArrangement = Arrangement.Center
-        ) {
-
-            Icon(imageVector = Icons.Rounded.Star, contentDescription = "")
-            Spacer(modifier = Modifier.height(2.dp))
-            Text(text = score)
-
-        }
-
-
-    }
-}
-
-/////////////////////////////////////////////fav button///////////////////////////////////////////
-@Composable
-fun FavButton(isFav: Boolean = false) {
-    var fav by remember { mutableStateOf(isFav) }
-    IconButton(
-        modifier = Modifier
-            .clip(shape = CircleShape)
-            .background(color = MaterialTheme.colorScheme.primary),
-        onClick = { fav = !fav },
-    ) {
-        Icon(
-            imageVector = if (!fav) Icons.Rounded.FavoriteBorder else Icons.Rounded.Favorite,
-            contentDescription = "",
-            tint = MaterialTheme.colorScheme.onPrimary
-        )
-    }
-}
+//@Composable
+//fun StarRank(score: String = "4.3") {
+//
+//    Card(
+//        elevation = CardDefaults.cardElevation(defaultElevation = 2.dp),
+//        modifier = Modifier.size(50.dp),
+//        shape = CircleShape,
+//        colors = CardDefaults.cardColors(
+//            containerColor = MaterialTheme.colorScheme.primary,
+//            contentColor = MaterialTheme.colorScheme.onPrimary
+//        )
+//    ) {
+//        Column(
+//            modifier = Modifier
+//                .fillMaxSize()
+//                .padding(1.dp),
+//            horizontalAlignment = Alignment.CenterHorizontally,
+//            verticalArrangement = Arrangement.Center
+//        ) {
+//
+//            Icon(imageVector = Icons.Rounded.Star, contentDescription = "")
+//            Spacer(modifier = Modifier.height(2.dp))
+//            Text(text = score)
+//
+//        }
+//
+//
+//    }
+//}
+//
+///////////////////////////////////////////////fav button///////////////////////////////////////////
+//@Composable
+//fun FavButton(isFav: Boolean = false) {
+//    var fav by remember { mutableStateOf(isFav) }
+//    IconButton(
+//        modifier = Modifier
+//            .clip(shape = CircleShape)
+//            .background(color = MaterialTheme.colorScheme.primary),
+//        onClick = { fav = !fav },
+//    ) {
+//        Icon(
+//            imageVector = if (!fav) Icons.Rounded.FavoriteBorder else Icons.Rounded.Favorite,
+//            contentDescription = "",
+//            tint = MaterialTheme.colorScheme.onPrimary
+//        )
+//    }
+//}
+// endregion
