@@ -1,19 +1,19 @@
 package com.github.mohammda2723.readerapp.component
 
-import android.widget.Toast
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.Icons
@@ -21,10 +21,9 @@ import androidx.compose.material.icons.filled.AccountCircle
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.Person
 import androidx.compose.material.icons.filled.RemoveRedEye
-import androidx.compose.material.icons.rounded.Favorite
+import androidx.compose.material.icons.filled.StarBorder
 import androidx.compose.material.icons.rounded.FavoriteBorder
 import androidx.compose.material.icons.rounded.Logout
-import androidx.compose.material.icons.rounded.Star
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -38,10 +37,6 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.MutableState
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -49,15 +44,19 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontStyle
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
+import coil.compose.rememberAsyncImagePainter
+import com.github.mohammda2723.readerapp.model.MBook
 import com.github.mohammda2723.readerapp.navigation.ReaderScreens
 import com.google.firebase.auth.FirebaseAuth
 
@@ -275,9 +274,9 @@ fun MyFloatActionButton(onClick: () -> Unit) {
 
 }
 
-/////////////////////////////////Reading Area /////////////////////////////////////////////////////
+/////////////////////////////////Profile Area /////////////////////////////////////////////////////
 @Composable
-fun ReadingNow(navController: NavController) {
+fun Profile(navController: NavController) {
 
     val name = FirebaseAuth.getInstance()
         .currentUser?.email?.split('@')?.get(0) ?: "N/A"
@@ -341,6 +340,157 @@ fun TitleSection(
 
 
 }
+
+//////////////////////////////////ListCard/////////////////////////////////////////////////////////
+@Preview
+@Composable
+fun ListCard(
+    book: MBook = MBook(
+        id = "aff",
+        title = "A Song of Ice and Fire",
+        authors = "George R. R. Martin",
+        notes = "A Song of Ice and Fire (commonly abbreviated as ASoIaF) is an ongoing series of epic fantasy novels by American novelist and screenwriter George R. R. Martin. Martin began writing the series in 1991 and the first volume was published in 1996. Originally planned as a trilogy, the series now consists of five published volumes; a further two are planned. In addition there are three prequel novellas currently available, with several more being planned, and a series of novella-length excerpts from the main Ice and Fire novels."
+    ), onPressDetails: (String) -> Unit = { }
+) {
+
+    val context = LocalContext.current
+    val resources = context.resources
+
+    val displayMetrics = resources.displayMetrics
+    val screenWith = displayMetrics.widthPixels / displayMetrics.density
+    val spacing = 10.dp
+
+
+    Card(
+        elevation = CardDefaults.cardElevation(6.dp),
+        shape = RoundedCornerShape(10.dp),
+        modifier = Modifier
+            .width(202.dp)
+            .clickable { onPressDetails(book.title.toString()) }) {
+
+
+        Column(
+            modifier = Modifier
+                .width(screenWith.dp - (spacing * 2))
+                .padding(4.dp),
+            horizontalAlignment = Alignment.Start
+        ) {
+            Row(horizontalArrangement = Arrangement.Center) {
+                Image(
+                    painter = rememberAsyncImagePainter(model = ""),
+                    contentDescription = "",
+                    modifier = Modifier
+                        .height(140.dp)
+                        .width(100.dp)
+                        .padding(4.dp)
+                )
+                Spacer(modifier = Modifier.width(50.dp))
+                Column(
+                    modifier = Modifier.padding(top = 25.dp),
+                    verticalArrangement = Arrangement.Center,
+                    horizontalAlignment = Alignment.CenterHorizontally
+                ) {
+                    Icon(
+                        imageVector = Icons.Rounded.FavoriteBorder,
+                        contentDescription = "",
+                        modifier = Modifier.padding(bottom = 1.dp)
+                    )
+                    BookRating(score = 4.5)
+
+                }
+            }
+            Text(
+                text = "Book Title",
+                modifier = Modifier.padding(4.dp),
+                fontWeight = FontWeight.Bold,
+                maxLines = 2,
+                overflow = TextOverflow.Ellipsis
+            )
+            Spacer(modifier = Modifier.height(2.dp))
+            Text(text = "Author : All")
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.End,
+                verticalAlignment = Alignment.Bottom
+            ) {
+
+                RoundedButton(label = "Reading", radius = 10)
+
+
+            }
+        }
+
+    }
+}
+
+
+
+////////////////////////////////////////////RoundedButton///////////////////////////////////////////
+@Composable
+fun RoundedButton(
+    label: String = "Reading",
+    radius: Int = 29,
+    onPress: () -> Unit = {},
+) {
+    Surface(
+        modifier = Modifier
+            .clip(
+                RoundedCornerShape(
+                    bottomEnd = radius.dp,
+                    topStart = radius.dp
+                )
+            ),
+        color = MaterialTheme.colorScheme.primary
+    ) {
+        Column(
+            modifier = Modifier
+                .width(90.dp)
+                .height(40.dp)
+                .clickable { onPress.invoke() },
+            verticalArrangement = Arrangement.Center,
+            horizontalAlignment = Alignment.CenterHorizontally
+        ) {
+            Text(
+                text = label,
+                style = TextStyle(color = MaterialTheme.colorScheme.onPrimary, fontSize = 15.sp)
+            )
+
+        }
+
+    }
+
+
+}
+
+//////////////////////////////////////BookRating////////////////////////////////////////////////////
+@Composable
+fun BookRating(score: Double = 4.5) {
+
+    Surface(
+        modifier = Modifier
+            .height(70.dp)
+            .padding(4.dp),
+        shape = RoundedCornerShape(56.dp),
+        tonalElevation = 6.dp,
+        shadowElevation = 6.dp,
+        color = MaterialTheme.colorScheme.primary
+    ) {
+
+        Column(modifier = Modifier.padding(4.dp)) {
+            Icon(
+                imageVector = Icons.Filled.StarBorder,
+                contentDescription = "",
+            )
+            Spacer(modifier = Modifier.height(1.dp))
+            Text(text = score.toString(), style = MaterialTheme.typography.bodyMedium)
+        }
+
+
+    }
+
+}
+
+
 // region OWN CODE
 //////////////////////////////// Star Rank ////////////////////////////////////////////////////////
 //@Composable
