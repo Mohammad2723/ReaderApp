@@ -7,6 +7,7 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
@@ -25,11 +26,15 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
+import androidx.compose.ui.modifier.modifierLocalConsumer
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import coil.compose.rememberAsyncImagePainter
 import com.github.mohammda2723.readerapp.component.MyFloatActionButton
@@ -96,7 +101,6 @@ fun ListCard(
         elevation = CardDefaults.cardElevation(6.dp),
         shape = RoundedCornerShape(10.dp),
         modifier = Modifier
-            .padding(16.dp)
             .height(242.dp)
             .width(202.dp)
             .clickable { onPressDetails(book.title.toString()) }) {
@@ -139,7 +143,18 @@ fun ListCard(
             )
             Spacer(modifier = Modifier.height(2.dp))
             Text(text = "Author : All")
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.End,
+                verticalAlignment = Alignment.Bottom
+            ) {
+
+                RoundedButton(label = "Reading", radius = 70)
+
+
+            }
         }
+
     }
 
 
@@ -231,6 +246,44 @@ fun BookRating(score: Double = 4.5) {
             Text(text = score.toString(), style = MaterialTheme.typography.bodyMedium)
         }
 
+
+    }
+
+
+}
+
+
+@Preview
+@Composable
+fun RoundedButton(
+    label: String = "Reading",
+    radius: Int = 29,
+    onPress: () -> Unit = {},
+) {
+    Surface(
+        modifier = Modifier
+            .clip(
+                RoundedCornerShape(
+                    bottomEnd = radius.dp,
+                    topStart = radius.dp
+                )
+            ),
+        color = MaterialTheme.colorScheme.primary
+    ) {
+        Column(
+            modifier = Modifier
+                .width(90.dp)
+                .height(40.dp)
+                .clickable { onPress.invoke() },
+            verticalArrangement = Arrangement.Center,
+            horizontalAlignment = Alignment.CenterHorizontally
+        ) {
+            Text(
+                text = label,
+                style = TextStyle(color = MaterialTheme.colorScheme.onPrimary, fontSize = 15.sp)
+            )
+
+        }
 
     }
 
