@@ -1,10 +1,16 @@
 package com.github.mohammda2723.readerapp.screens.home
 
+import android.util.Log
+import androidx.compose.foundation.horizontalScroll
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
@@ -14,7 +20,7 @@ import androidx.navigation.NavController
 import com.github.mohammda2723.readerapp.component.ListCard
 import com.github.mohammda2723.readerapp.component.MyFloatActionButton
 import com.github.mohammda2723.readerapp.component.MyTopAppBar
-import com.github.mohammda2723.readerapp.component.Profile
+import com.github.mohammda2723.readerapp.component.Header
 import com.github.mohammda2723.readerapp.component.TitleSection
 import com.github.mohammda2723.readerapp.model.MBook
 
@@ -24,6 +30,17 @@ import com.github.mohammda2723.readerapp.model.MBook
 @Composable
 fun Home(navController: NavController) {
 
+
+    val listOfBooks =
+        listOf<MBook>(
+            MBook(id = "1", title = "A", authors = "mohammad", notes = ""),
+            MBook(id = "2", title = "B", authors = "mohammad", notes = ""),
+            MBook(id = "3", title = "C", authors = "mohammad", notes = ""),
+            MBook(id = "4", title = "F", authors = "mohammad", notes = ""),
+            MBook(id = "5", title = "E", authors = "mohammad", notes = ""),
+            MBook(id = "6", title = "f", authors = "mohammad", notes = ""),
+            MBook(id = "7", title = "g", authors = "mohammad", notes = ""),
+        )
 
     Scaffold(
         topBar = { MyTopAppBar(title = "ReaderApp", navController = navController) },
@@ -35,37 +52,70 @@ fun Home(navController: NavController) {
 
     { padding ->
         // home screen content
-        FBContent(modifier = Modifier.padding(padding), navController = navController)
+        FBContent(
+            listOfBooks = listOfBooks,
+            modifier = Modifier.padding(padding),
+            navController = navController
+        )
     }
 }
 
 
 @Composable
-fun FBContent(modifier: Modifier, navController: NavController) {
+fun FBContent(modifier: Modifier, navController: NavController, listOfBooks: List<MBook>) {
     Column(
         modifier = modifier
             .fillMaxSize()
     ) {
         Spacer(modifier = Modifier.height(10.dp))
-        Profile(navController = navController)
+        Header(navController = navController)
         Spacer(modifier = Modifier.height(10.dp))
         ListCard()
         Spacer(modifier = Modifier.height(10.dp))
-        ReadingRightNowAria(book = listOf(), navController = navController)
+        ReadingRightNowAria(book = listOfBooks, navController = navController)
 
     }
 }
 
 
 @Composable
-fun ReadingRightNowAria(book: List<MBook>, navController: NavController) {
+fun ReadingRightNowAria(book: List<MBook> = emptyList(), navController: NavController) {
     TitleSection(label = "Reading List")
-    BookListArea(listofBook = book, navController = navController)
+    BookListArea(listOfBook = book, navController = navController)
 
 }
 
 @Composable
-fun BookListArea(listofBook: List<MBook>, navController: NavController) {
+fun BookListArea(listOfBook: List<MBook>, navController: NavController) {
+
+    HorizontalScrollableComponent(listOfBook = listOfBook) {
+        Log.i("Card", " press on $it")
+    }
+
+
+}
+
+@Composable
+fun HorizontalScrollableComponent(listOfBook: List<MBook>, onCardPressed: (String) -> Unit) {
+    val scrollState = rememberScrollState()
+
+    Row(
+        modifier = Modifier
+            .fillMaxWidth()
+            .heightIn(280.dp)
+            .horizontalScroll(scrollState)
+            .fillMaxWidth()
+            .height(280.dp)
+    ) {
+        for (book in listOfBook) {
+
+            ListCard(book = book) {
+                onCardPressed(it)
+            }
+
+        }
+
+    }
 
 }
 

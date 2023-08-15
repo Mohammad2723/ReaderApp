@@ -40,7 +40,7 @@ import com.github.mohammda2723.readerapp.screens.update.Update
         }
         //Search
         composable(ReaderScreens.Search.name){
-            Search()
+            Search(navController = navController)
         }
         //Stats
         composable(ReaderScreens.Stats.name){

@@ -1,7 +1,6 @@
 package com.github.mohammda2723.readerapp.component
 
 import androidx.compose.foundation.Image
-import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -19,9 +18,9 @@ import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.AccountCircle
 import androidx.compose.material.icons.filled.Add
-import androidx.compose.material.icons.filled.Person
 import androidx.compose.material.icons.filled.RemoveRedEye
 import androidx.compose.material.icons.filled.StarBorder
+import androidx.compose.material.icons.rounded.Book
 import androidx.compose.material.icons.rounded.FavoriteBorder
 import androidx.compose.material.icons.rounded.Logout
 import androidx.compose.material3.Card
@@ -35,6 +34,7 @@ import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
+import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.MutableState
 import androidx.compose.ui.Alignment
@@ -195,8 +195,10 @@ fun MyTopAppBar(
 ) {
 
     TopAppBar(
+        colors = TopAppBarDefaults
+            .largeTopAppBarColors(containerColor = MaterialTheme.colorScheme.primaryContainer),
         title = {
-            Profile(showProfile, title)
+            Header(showProfile, title)
         }, actions = {
             if (showProfile) {
                 LogoutButton {
@@ -219,7 +221,8 @@ fun LogoutButton(onClick: () -> Unit) {
     }) {
         Icon(
             imageVector = Icons.Rounded.Logout,
-            contentDescription = "logout"
+            contentDescription = "logout",
+            tint = MaterialTheme.colorScheme.primary
         )
     }
 }
@@ -227,16 +230,15 @@ fun LogoutButton(onClick: () -> Unit) {
 
 //////////////////////////////////////////profile on topAppBar/////////////////////////////////////
 @Composable
-fun Profile(showProfile: Boolean, title: String) {
+fun Header(showProfile: Boolean, title: String) {
     Row(verticalAlignment = Alignment.CenterVertically) {
         if (showProfile) {
             Icon(
                 modifier = Modifier
-                    .size(40.dp)
-                    .clip(CircleShape)
-                    .background(color = MaterialTheme.colorScheme.primary),
-                imageVector = Icons.Default.Person,
-                contentDescription = ""
+                    .size(40.dp),
+                imageVector = Icons.Rounded.Book,
+                contentDescription = "",
+                tint = MaterialTheme.colorScheme.primary
             )
         }
         Spacer(modifier = Modifier.width(10.dp))
@@ -276,7 +278,7 @@ fun MyFloatActionButton(onClick: () -> Unit) {
 
 /////////////////////////////////Profile Area /////////////////////////////////////////////////////
 @Composable
-fun Profile(navController: NavController) {
+fun Header(navController: NavController) {
 
     val name = FirebaseAuth.getInstance()
         .currentUser?.email?.split('@')?.get(0) ?: "N/A"
@@ -366,6 +368,7 @@ fun ListCard(
         shape = RoundedCornerShape(10.dp),
         modifier = Modifier
             .width(202.dp)
+            .padding(10.dp)
             .clickable { onPressDetails(book.title.toString()) }) {
 
 
@@ -381,7 +384,7 @@ fun ListCard(
                     contentDescription = "",
                     modifier = Modifier
                         .height(140.dp)
-                        .width(100.dp)
+                        .width(80.dp)
                         .padding(4.dp)
                 )
                 Spacer(modifier = Modifier.width(50.dp))
@@ -400,14 +403,14 @@ fun ListCard(
                 }
             }
             Text(
-                text = "Book Title",
+                text = book.title.toString(),
                 modifier = Modifier.padding(4.dp),
                 fontWeight = FontWeight.Bold,
                 maxLines = 2,
                 overflow = TextOverflow.Ellipsis
             )
             Spacer(modifier = Modifier.height(2.dp))
-            Text(text = "Author : All")
+            Text(text = book.authors.toString())
             Row(
                 modifier = Modifier.fillMaxWidth(),
                 horizontalArrangement = Arrangement.End,
@@ -422,7 +425,6 @@ fun ListCard(
 
     }
 }
-
 
 
 ////////////////////////////////////////////RoundedButton///////////////////////////////////////////
