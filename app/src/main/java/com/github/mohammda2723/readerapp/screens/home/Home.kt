@@ -23,6 +23,7 @@ import com.github.mohammda2723.readerapp.component.MyTopAppBar
 import com.github.mohammda2723.readerapp.component.Header
 import com.github.mohammda2723.readerapp.component.TitleSection
 import com.github.mohammda2723.readerapp.model.MBook
+import com.github.mohammda2723.readerapp.navigation.ReaderScreens
 
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -46,7 +47,7 @@ fun Home(navController: NavController) {
         topBar = { MyTopAppBar(title = "ReaderApp", navController = navController) },
         floatingActionButton = {
             MyFloatActionButton {
-                // todo: onClick FloatingActionButton
+                navController.navigate(ReaderScreens.Search.name)
             }
         })
 

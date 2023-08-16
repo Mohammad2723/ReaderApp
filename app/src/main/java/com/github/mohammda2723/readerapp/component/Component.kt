@@ -20,6 +20,7 @@ import androidx.compose.material.icons.filled.AccountCircle
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.RemoveRedEye
 import androidx.compose.material.icons.filled.StarBorder
+import androidx.compose.material.icons.rounded.ArrowBack
 import androidx.compose.material.icons.rounded.Book
 import androidx.compose.material.icons.rounded.FavoriteBorder
 import androidx.compose.material.icons.rounded.Logout
@@ -493,6 +494,35 @@ fun BookRating(score: Double = 4.5) {
 }
 
 
+/////////////////////////////// TopAppBar SEARCH SCREEN ////////////////////////////////////////////
+
+//Search TopBar
+
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+fun SearchTopBar(navController: NavController) {
+
+    TopAppBar(navigationIcon = {
+        IconButton(onClick = {
+            navController.popBackStack()
+            navController.navigate(ReaderScreens.Home.name)
+        }) {
+
+            Icon(imageVector = Icons.Rounded.ArrowBack, contentDescription = "")
+        }
+    },
+        title = {
+            Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.Center) {
+
+                Text(
+                    text = "Search Book",
+                    style = MaterialTheme.typography.headlineMedium,
+                    color = MaterialTheme.colorScheme.primary
+                )
+            }
+        })
+
+}
 // region OWN CODE
 //////////////////////////////// Star Rank ////////////////////////////////////////////////////////
 //@Composable
