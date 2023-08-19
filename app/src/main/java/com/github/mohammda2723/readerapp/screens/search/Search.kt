@@ -88,7 +88,7 @@ fun BookList(visibel: Boolean) {
     LazyColumn(modifier = Modifier.fillMaxSize(), contentPadding = PaddingValues(16.dp)) {
         items(items = listOfBooks) { book ->
 
-            SearchList(book = book)
+            BookRow(book = book)
         }
     }
 
@@ -128,7 +128,7 @@ fun SearchForm(
 }
 
 @Composable
-fun SearchList(book: MBook) {
+fun BookRow(book: MBook) {
 
     Surface(
         modifier = Modifier
