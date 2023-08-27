@@ -38,7 +38,7 @@ import com.github.mohammda2723.readerapp.model.MBook
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun Search(navController: NavController) {
+fun Search(navController: NavController  ) {
 
     Scaffold(topBar = { SearchTopBar(navController = navController) }) {
         Surface(

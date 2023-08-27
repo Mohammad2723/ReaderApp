@@ -39,7 +39,7 @@ class BookRepository @Inject constructor(private val api: BookApi) {
             bookInfoDataOrException.loading = true
             bookInfoDataOrException.data = api.getBookInfo(bookId)
             if (bookInfoDataOrException.data.toString().isNotEmpty())
-                bookInfoDataOrException.loading
+                bookInfoDataOrException.loading = false
 
         } catch (e: Exception) {
             bookInfoDataOrException.e = e
