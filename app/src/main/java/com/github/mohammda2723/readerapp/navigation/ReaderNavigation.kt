@@ -8,6 +8,7 @@ import com.github.mohammda2723.readerapp.screens.details.BookDetails
 import com.github.mohammda2723.readerapp.screens.home.Home
 import com.github.mohammda2723.readerapp.screens.login.Login
 import com.github.mohammda2723.readerapp.screens.search.Search
+import com.github.mohammda2723.readerapp.screens.search.SearchViewModel
 import com.github.mohammda2723.readerapp.screens.spalsh.Splash
 import com.github.mohammda2723.readerapp.screens.stats.Stats
 import com.github.mohammda2723.readerapp.screens.update.Update
