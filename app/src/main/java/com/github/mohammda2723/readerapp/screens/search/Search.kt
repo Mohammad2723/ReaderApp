@@ -9,6 +9,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
@@ -29,16 +30,20 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import coil.compose.AsyncImage
+import com.bumptech.glide.integration.compose.ExperimentalGlideComposeApi
+import com.bumptech.glide.integration.compose.GlideImage
 import com.github.mohammda2723.readerapp.component.InputField
 import com.github.mohammda2723.readerapp.component.SearchTopBar
+import com.github.mohammda2723.readerapp.model.Item
 import com.github.mohammda2723.readerapp.model.MBook
 
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun Search(navController: NavController , viewModel: SearchViewModel   ) {
+fun Search(navController: NavController, viewModel: SearchViewModel = hiltViewModel()) {
 
     Scaffold(topBar = { SearchTopBar(navController = navController) }) {
         Surface(
@@ -56,13 +61,14 @@ fun Search(navController: NavController , viewModel: SearchViewModel   ) {
                     modifier = Modifier
                         .fillMaxWidth()
                         .padding(16.dp)
-                ) { massage ->
-                    //todo:implement search
-                    Log.i("search", massage)
+                ) { searchQuery ->
+
+                    viewModel.searchBook(searchQuery)
+
                 }
 
                 Spacer(modifier = Modifier.height(10.dp))
-                BookList(visibel = true)
+                BookList(navController)
 
             }
 
@@ -72,18 +78,20 @@ fun Search(navController: NavController , viewModel: SearchViewModel   ) {
 }
 
 @Composable
-fun BookList(visibel: Boolean) {
+fun BookList(navController: NavController, viewModel: SearchViewModel = hiltViewModel()) {
 
-    val listOfBooks =
-        listOf<MBook>(
-            MBook(id = "1", title = "A", authors = "mohammad", notes = ""),
-            MBook(id = "2", title = "B", authors = "mohammad", notes = ""),
-            MBook(id = "3", title = "C", authors = "mohammad", notes = ""),
-            MBook(id = "4", title = "F", authors = "mohammad", notes = ""),
-            MBook(id = "5", title = "E", authors = "mohammad", notes = ""),
-            MBook(id = "6", title = "f", authors = "mohammad", notes = ""),
-            MBook(id = "7", title = "g", authors = "mohammad", notes = ""),
-        )
+    val listOfBooks = viewModel.list
+
+//    val listOfBooks =
+//        listOf<MBook>(
+//            MBook(id = "1", title = "A", authors = "mohammad", notes = ""),
+//            MBook(id = "2", title = "B", authors = "mohammad", notes = ""),
+//            MBook(id = "3", title = "C", authors = "mohammad", notes = ""),
+//            MBook(id = "4", title = "F", authors = "mohammad", notes = ""),
+//            MBook(id = "5", title = "E", authors = "mohammad", notes = ""),
+//            MBook(id = "6", title = "f", authors = "mohammad", notes = ""),
+//            MBook(id = "7", title = "g", authors = "mohammad", notes = ""),
+//        )
 
     LazyColumn(modifier = Modifier.fillMaxSize(), contentPadding = PaddingValues(16.dp)) {
         items(items = listOfBooks) { book ->
@@ -127,8 +135,9 @@ fun SearchForm(
     }
 }
 
+@OptIn(ExperimentalGlideComposeApi::class)
 @Composable
-fun BookRow(book: MBook) {
+fun BookRow(book: Item) {
 
     Surface(
         modifier = Modifier
@@ -139,18 +148,32 @@ fun BookRow(book: MBook) {
         shape = RoundedCornerShape(10.dp)
     ) {
         Row(modifier = Modifier.fillMaxWidth()) {
-            AsyncImage(
-                model = "https://upload.wikimedia.org/wikipedia/en/d/dc/A_Song_of_Ice_and_Fire_book_collection_box_set_cover.jpg",
-                contentDescription = "",
-                contentScale = ContentScale.FillHeight
-            )
+//            val imageUrl =
+//                if (book.volumeInfo.imageLinks.smallThumbnail.isNotEmpty()) {
+//                    book.volumeInfo.imageLinks.smallThumbnail
+//                } else {
+//                    "https://wgmimedia.com/wp-content/uploads/2023/05/Screenshot-2023-05-03-201700.jpg"
+//                }
+            val imageUrl = "http://books.google.com/books/content?id=5BGBswAQSiEC&printsec=frontcover&img=1&zoom=5&edge=curl&source=gbs_api.jpg"
+//            AsyncImage(
+//                model = imageUrl,
+//                contentDescription = "",
+//                contentScale = ContentScale.FillHeight
+//            )
+            GlideImage(modifier = Modifier.size(100.dp), model = "https://wgmimedia.com/wp-content/uploads/2023/05/Screenshot-2023-05-03-201700.jpg", contentDescription ="" )
             Spacer(modifier = Modifier.width(5.dp))
             Column {
-                Text(text = book.title.toString(), style = MaterialTheme.typography.bodyLarge)
+                Text(text = book.volumeInfo.title, style = MaterialTheme.typography.bodyLarge)
                 Spacer(modifier = Modifier.height(5.dp))
-                Text(text = book.authors.toString(), style = MaterialTheme.typography.bodyMedium)
+                Text(
+                    text = book.volumeInfo.authors.toString(),
+                    style = MaterialTheme.typography.bodyMedium
+                )
                 Spacer(modifier = Modifier.height(5.dp))
-                Text(text = "Date: 2020-09-09", style = MaterialTheme.typography.bodyMedium)
+                Text(
+                    text = book.volumeInfo.imageLinks.smallThumbnail,
+                    style = MaterialTheme.typography.bodyMedium
+                )
                 Spacer(modifier = Modifier.height(5.dp))
                 Text(text = "[Computer]", style = MaterialTheme.typography.bodyMedium)
 

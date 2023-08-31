@@ -13,7 +13,6 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import javax.inject.Inject
-import androidx.
 
 
 @HiltViewModel
@@ -29,7 +28,7 @@ class SearchViewModel @Inject constructor(private val repository: BookRepository
         searchBook("Android")
     }
 
-    private fun searchBook(query: String) {
+     fun searchBook(query: String) {
 
         viewModelScope.launch(Dispatchers.Default) {
 

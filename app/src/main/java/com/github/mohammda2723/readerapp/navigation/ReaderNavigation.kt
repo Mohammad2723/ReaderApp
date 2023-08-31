@@ -1,9 +1,11 @@
 package com.github.mohammda2723.readerapp.navigation
 
 import androidx.compose.runtime.Composable
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import com.github.mohammda2723.readerapp.repository.BookRepository
 import com.github.mohammda2723.readerapp.screens.details.BookDetails
 import com.github.mohammda2723.readerapp.screens.home.Home
 import com.github.mohammda2723.readerapp.screens.login.Login
@@ -14,42 +16,42 @@ import com.github.mohammda2723.readerapp.screens.stats.Stats
 import com.github.mohammda2723.readerapp.screens.update.Update
 
 @Composable
- fun ReaderNavigation() {
+fun ReaderNavigation() {
 
-     val navController = rememberNavController()
+    val navController = rememberNavController()
 
-    NavHost(navController = navController , startDestination = ReaderScreens.Splash.name){
+    NavHost(navController = navController, startDestination = ReaderScreens.Splash.name) {
 
         //Splash
-        composable(ReaderScreens.Splash.name){
+        composable(ReaderScreens.Splash.name) {
 
             Splash(navController = navController)
         }
         //home
-        composable(ReaderScreens.Home.name){
+        composable(ReaderScreens.Home.name) {
             Home(navController = navController)
         }
         //login
-        composable(ReaderScreens.Login.name){
+        composable(ReaderScreens.Login.name) {
 
             Login(navController)
 
         }
         //details
-        composable(ReaderScreens.Details.name){
+        composable(ReaderScreens.Details.name) {
             BookDetails()
         }
         //Search
-        composable(ReaderScreens.Search.name){
-
-            Search(navController = navController)
+        composable(ReaderScreens.Search.name) {
+            val viewModel = hiltViewModel<SearchViewModel>()
+            Search(navController = navController, viewModel = viewModel)
         }
         //Stats
-        composable(ReaderScreens.Stats.name){
+        composable(ReaderScreens.Stats.name) {
             Stats()
         }
         //Update
-        composable(ReaderScreens.Update.name){
+        composable(ReaderScreens.Update.name) {
             Update()
         }
 

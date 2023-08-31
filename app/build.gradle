@@ -10,12 +10,12 @@ plugins {
 
 android {
     namespace 'com.github.mohammda2723.readerapp'
-    compileSdk 33
+    compileSdk 34
 
     defaultConfig {
         applicationId "com.github.mohammda2723.readerapp"
         minSdk 24
-        targetSdk 33
+        targetSdk 34
         versionCode 1
         versionName "1.0"
 
@@ -67,6 +67,10 @@ dependencies {
     implementation "com.google.dagger:hilt-android:2.44"
     kapt 'androidx.hilt:hilt-compiler:1.0.0'
     kapt "com.google.dagger:hilt-compiler:2.44"
+    kapt "com.google.dagger:hilt-android-compiler:2.44"
+    // if miss this lib you can't use hiltViewModel()
+    implementation 'androidx.hilt:hilt-navigation-compose:1.0.0'
+
 
 
     //navigation
@@ -76,9 +80,9 @@ dependencies {
     //material icons - use with caution!
     implementation "androidx.compose.material:material-icons-extended:1.4.3"
     // Coroutines
-    implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-core:1.7.1'
-    implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-android:1.6.4'
-    implementation "org.jetbrains.kotlinx:kotlinx-coroutines-play-services:1.6.4"
+    implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-core:1.7.2'
+    implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-android:1.7.2'
+    implementation "org.jetbrains.kotlinx:kotlinx-coroutines-play-services:1.7.2"
 
     // Coroutine Lifecycle Scopes
     implementation "androidx.lifecycle:lifecycle-viewmodel-ktx:2.6.1"
@@ -95,6 +99,9 @@ dependencies {
 
     // JSON Converter
     implementation 'com.squareup.retrofit2:converter-gson:2.9.0'
+
+    //Glide
+    implementation "com.github.bumptech.glide:compose:1.0.0-alpha.5"
 
     implementation 'androidx.core:core-ktx:1.10.1'
     implementation platform('org.jetbrains.kotlin:kotlin-bom:1.8.0')
