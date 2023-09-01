@@ -1,6 +1,5 @@
 package com.github.mohammda2723.readerapp.screens.search
 
-import android.util.Log
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
@@ -26,19 +25,16 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
-import coil.compose.AsyncImage
 import com.bumptech.glide.integration.compose.ExperimentalGlideComposeApi
 import com.bumptech.glide.integration.compose.GlideImage
 import com.github.mohammda2723.readerapp.component.InputField
 import com.github.mohammda2723.readerapp.component.SearchTopBar
 import com.github.mohammda2723.readerapp.model.Item
-import com.github.mohammda2723.readerapp.model.MBook
 
 
 @OptIn(ExperimentalMaterial3Api::class)
